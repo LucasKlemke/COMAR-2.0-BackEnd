@@ -1,0 +1,37 @@
+create table usuario (id INT primary key AUTO_INCREMENT, email VARCHAR(30), senha VARCHAR(30));
+
+create table projeto (id INT primary key AUTO_INCREMENT, nome VARCHAR(30), dataCriacao DATE, saldo DECIMAL(15,2))
+
+create table movimentacao (id INT primary key AUTO_INCREMENT,
+projetoId INT,
+valor DECIMAL (15,2),
+dataMovimento DATE,
+notaFiscal VARCHAR(50),
+saldo DECIMAL (15,2),
+fornecedor VARCHAR(50),
+documento VARCHAR(50),
+historico VARCHAR(50),
+isEntrada bool,
+foreign key (projetoId) references projeto(id));
+
+INSERT INTO projeto (nome,dataCriacao,saldo) VALUES ("projetoTeste2", "2024-04-11", 66.35);
+
+
+select * from projeto;
+
+INSERT INTO movimentacao (projetoId ,valor,dataMovimento,notaFiscal,saldo,fornecedor,documento,historico,isEntrada) VALUES (1,50.55,"2024-04-11","1000",50.55,"Doacao anonima","1000","CRED TED", true);
+
+select * from movimentacao;
+
+SELECT saldo from projeto where id = 7;
+
+DELETE FROM movimentacao;
+
+INSERT INTO usuario (email, senha) VALUES ('usuario@email.com','abacate123');
+
+SELECT * FROM usuario;
+
+
+drop table movimentacao ;
+drop table projeto;
+drop table usuario;

@@ -1,0 +1,6 @@
+npm i express
+npm i mysql2
+npm i dotenv
+npm i nodemon
+npm i dotenv
+npm i cors
