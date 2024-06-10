@@ -33,7 +33,7 @@ export const getUmaMovimentacao = (req, res) => {
 
 //VERIFICAR E INFORMAR SE OS DADOS SAO OU NAO VALIDOS
 export const postMovimentacao = async (req, res) => {
-  const { projetoid } = await req.params;
+  let { projetoid } = await req.params;
   const {
     valor,
     dataMovimento,
@@ -43,6 +43,8 @@ export const postMovimentacao = async (req, res) => {
     historico,
     isEntrada,
   } = await req.body;
+
+  projetoid = +projetoid
   //indicação de movimentação não existe
   db.query(pegarSaldo, [projetoid], async (err, result) => {
     if (err) {

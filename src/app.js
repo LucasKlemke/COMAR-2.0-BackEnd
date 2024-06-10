@@ -19,5 +19,5 @@ app.use("/projeto", routerSistema);
 app.use("/usuario", routerUsuario);
 
 app.listen(port, () => {
-  console.log(`Server : http://localhost:${port}/sistema `);
+  console.log(`Server : http://localhost:${port}/projeto `);
 });
