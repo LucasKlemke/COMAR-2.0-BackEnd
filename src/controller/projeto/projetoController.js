@@ -6,6 +6,8 @@ import {
   adicionarNovoProjeto,
   alterarUmProjeto,
   deletarUmProjeto,
+  deletarMovimentacao,
+  selecionarProjetoCriado,
 } from "./queriesProjeto.js";
 
 //VERIFICAR E INFORMAR SE NÃO EXISTEM PROJETOS
@@ -35,7 +37,10 @@ export const adicionarProjeto = (req, res) => {
   //fazer verificação de id existente
   db.query(adicionarNovoProjeto, [nome, novaData, 0], (err, result) => {
     if (err) throw err;
-    res.status(200).json({ nome, novaData, saldo: 0 });
+    db.query(selecionarProjetoCriado,(err,result) => {
+      if(err) throw err;
+      res.status(200).json(result[0]);
+    })
   });
 };
 
@@ -44,10 +49,14 @@ export const deletarProjeto = (req, res) => {
   const { id } = req.params;
 
   //fazer verificação de projeto existente
-  db.query(deletarUmProjeto, [id], (err, result) => {
-    if (err) throw err;
-    res.status(201).json(`Projeto de ID = ${id} foi DELETADO`);
-  });
+  db.query(deletarMovimentacao, [id], (err,result) => {
+    if(err) throw err;
+    db.query(deletarUmProjeto, [id], (err, result) => {
+      if (err) throw err;
+      res.status(201).json(`Projeto de ID = ${id} foi DELETADO`);
+    });
+  })
+ 
 };
 
 //VERIFICAR E INFORMAR SE OS DADOS SAO VALIDOS
