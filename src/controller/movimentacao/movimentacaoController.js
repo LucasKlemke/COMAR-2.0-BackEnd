@@ -7,6 +7,7 @@ import {
   atualizarSaldo,
   deletarMovimentacao,
   atualizarMovimentacao,
+  selecionarNovaMovimentacao,
 } from "./queriesMovimentacao.js";
 
 //VERIFICAR E INFORMAR SE EXISTEM MOVIMENTACOES
@@ -34,7 +35,7 @@ export const getUmaMovimentacao = (req, res) => {
 //VERIFICAR E INFORMAR SE OS DADOS SAO OU NAO VALIDOS
 export const postMovimentacao = async (req, res) => {
   let { projetoid } = await req.params;
-  const {
+  let {
     valor,
     dataMovimento,
     notaFiscal,
@@ -44,6 +45,12 @@ export const postMovimentacao = async (req, res) => {
     isEntrada,
   } = await req.body;
 
+  valor = +valor
+
+  if(isEntrada == 'false'){
+    isEntrada = false
+  }
+
   projetoid = +projetoid
   //indicação de movimentação não existe
   db.query(pegarSaldo, [projetoid], async (err, result) => {
@@ -52,9 +59,9 @@ export const postMovimentacao = async (req, res) => {
     } else {
       let NovoSaldo;
       if (isEntrada) {
-        NovoSaldo = (await +result[0].saldo) + valor;
+        NovoSaldo = ( +result[0].saldo) + valor;
       } else if (!isEntrada) {
-        NovoSaldo = (await +result[0].saldo) - valor;
+        NovoSaldo = ( +result[0].saldo) - valor;
       }
 
       db.query(
@@ -77,17 +84,10 @@ export const postMovimentacao = async (req, res) => {
             db.query(atualizarSaldo, [NovoSaldo, projetoid], (err, result) => {
               if (err) throw err;
             });
-            res.status(200).json({
-              projetoid,
-              valor,
-              dataMovimento,
-              notaFiscal,
-              saldo: NovoSaldo,
-              fornecedor,
-              documento,
-              historico,
-              isEntrada,
-            });
+            db.query(selecionarNovaMovimentacao,[projetoid], (err,result) => {
+              if(err) throw err;
+              res.status(200).send(result[0])
+            })
           }
         }
       );

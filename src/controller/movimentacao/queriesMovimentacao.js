@@ -3,6 +3,7 @@ export const selectTodasMovimentacoes =
 
 export const selectUmaMovimentacao =
   "SELECT * FROM movimentacao where projetoid = ? and id = ?";
+  export const selecionarNovaMovimentacao = "select * from movimentacao where id in (select max(id) from movimentacao) and projetoId = ?";
 
 export const pegarSaldo = "SELECT saldo FROM projeto WHERE id = ?";
 export const criarMovimentacao =
