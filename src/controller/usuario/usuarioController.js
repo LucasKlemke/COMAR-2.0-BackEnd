@@ -5,6 +5,7 @@ import {
   adicionarUsuario,
   apagarUsuario,
   atualizarUsuario,
+  pegarIdNovoUsuario,
 } from "./queriesUsuario.js";
 
 //VERIFICAR SE EXISTEM USUARIOS OU NAO
@@ -31,7 +32,10 @@ export const postUsuario = (req, res) => {
 
   db.query(adicionarUsuario, [email, senha], (err, result) => {
     if (err) throw err;
-    res.status(200).json({ email, senha });
+    db.query(pegarIdNovoUsuario, (err, result) => {
+      if (err) throw err;
+      res.status(200).json(result);
+    });
   });
 };
 
