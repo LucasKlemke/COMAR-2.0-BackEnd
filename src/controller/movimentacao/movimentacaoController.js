@@ -49,6 +49,8 @@ export const postMovimentacao = async (req, res) => {
 
   if(isEntrada == 'false'){
     isEntrada = false
+  } else if (isEntrada == 'true'){
+    isEntrada = true
   }
 
   projetoid = +projetoid
