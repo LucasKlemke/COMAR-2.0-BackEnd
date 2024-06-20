@@ -1,4 +1,4 @@
-create table usuario (id INT primary key AUTO_INCREMENT, email VARCHAR(30), senha VARCHAR(30));
+create table usuario (id INT primary key AUTO_INCREMENT, email VARCHAR(100), senha VARCHAR(100));
 
 create table projeto (id INT primary key AUTO_INCREMENT, nome VARCHAR(30), dataCriacao DATE, saldo DECIMAL(15,2))
 
