@@ -10,7 +10,6 @@ import {
   selectUsuarioEmail,
 } from "./queriesUsuario.js";
  
-//VERIFICAR SE EXISTEM USUARIOS OU NAO
 export const getUsuarios = (req, res) => {
   db.query(selectTodosUsuarios, (err, result) => {
     if (err) throw err;
@@ -21,7 +20,6 @@ export const getUsuarios = (req, res) => {
   });
 };
  
-//VERIFICAR SE ID EXISTE OU NAO
 export const getUsuarioById = (req, res) => {
   const { id } = req.params;
  
@@ -33,7 +31,6 @@ export const getUsuarioById = (req, res) => {
   });
 };
  
-//VERIFICAR SE CAMPOS VAZIOS OU INVALIDOS SAO ENVIADOS
 export const postUsuario = (req, res) => {
   const { email, senha } = req.body;
  
@@ -55,7 +52,6 @@ export const postUsuario = (req, res) => {
   })
 };
  
-//VERIFICAR SE ID EXISTE
 export const deleteUsuario = (req, res) => {
   let { id } = req.params;
  
@@ -66,13 +62,10 @@ export const deleteUsuario = (req, res) => {
   });
 };
  
-//VERIFICAR SE ID EXISTE E SE OS CAMPOS NÃO SÃO VAZIOS E SÃO VALIDOS
-//ASSIM COMO VERIFICAR E INFORMAR SE ID EXISTE
 export const putUsuario = (req, res) => {
   let { id } = req.params;
   let { email, senha } = req.body;
  
-  //Faz um select para verificar se o ID existe
   db.query(selectUmUsuario, [id], (err, result) => {
     if (err) return err;
     //Validações
@@ -81,16 +74,13 @@ export const putUsuario = (req, res) => {
    
     id = +id;
    
-    //Faz o hash da nova senha
     bcrypt.hash(senha, 10, (errBcrypt, hash) => {
       if (errBcrypt) return res.status(500).json({mensagemErro: "Erro ao criar o hash da senha"});
  
-      //Faz as alterações dos dados do usuário
       db.query(atualizarUsuario, [email, hash, id], (err, result) => {
         if (err) throw err;
         res.status(200).json({ id, email, senha });
       });
     })
   })
-  //teste
 };
